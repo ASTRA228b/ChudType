@@ -1,0 +1,26 @@
+<Wix xmlns="http://wixtoolset.org/schemas/v4/wxs">
+  <Package Name="ChudType" Manufacturer="CHUDAI" Version="0.1.4" Scope="perUser"
+           UpgradeCode="5C38B75A-9AD4-4828-A9F1-11C6273C2184">
+    <MajorUpgrade DowngradeErrorMessage="A newer version of ChudType is already installed."/>
+    <MediaTemplate EmbedCab="yes"/>
+    <Icon Id="ProductIcon" SourceFile="$(Payload)\ChudType.exe"/>
+    <Property Id="ARPPRODUCTICON" Value="ProductIcon"/>
+    <StandardDirectory Id="LocalAppDataFolder">
+      <Directory Id="Programs" Name="Programs">
+        <Directory Id="INSTALLFOLDER" Name="ChudType"/>
+      </Directory>
+    </StandardDirectory>
+    <StandardDirectory Id="ProgramMenuFolder">
+      <Component Id="StartMenu" Guid="9B33AD70-B7BC-43CD-A2F1-2298BAD5EFFA">
+        <Shortcut Id="StartChudType" Name="ChudType" Description="CHUDAI voice dictation"
+                  Target="[INSTALLFOLDER]ChudType.exe" WorkingDirectory="INSTALLFOLDER"/>
+        <RemoveRegistryValue Root="HKCU" Key="Software\Microsoft\Windows\CurrentVersion\Run" Name="CHUDAI.ChudType"/>
+        <RegistryValue Root="HKCU" Key="Software\CHUDAI\ChudType" Name="Installed" Type="integer" Value="1" KeyPath="yes"/>
+      </Component>
+    </StandardDirectory>
+    <Feature Id="Application" Title="ChudType" Level="1">
+      <Files Include="$(Payload)\**" Directory="INSTALLFOLDER"/>
+      <ComponentRef Id="StartMenu"/>
+    </Feature>
+  </Package>
+</Wix>
